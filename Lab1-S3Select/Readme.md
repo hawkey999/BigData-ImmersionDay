@@ -16,6 +16,7 @@
 4. 下载以下2个样例数据文件，并上传到你账户的 S3 某个 Bucket 中
 
     [pagecounts-20100212-050000.gz](./sample-data/pagecounts-20100212-050000.gz)
+    
     [users-data.json](./sample-data/users-data.json)
 
 ## 在控制台进行 S3 Select
@@ -28,20 +29,22 @@
 ![下一步](./img/img2.png)
 ![SQL](./img/img3.png)
 
+尝试命令：
     select count(*) from s3object s
 
     select * from  s3object s limit 10
 
     select s._1,s._4 from s3object s where s._4='377' limit 10
 
-参考示例，做更多 S3 命令尝试
+参考示例，自由做更多 S3 命令尝试
 ![示例](./img/img4.png)
 
 尝试其他更多的命令，参考：S3 SELECT command SQL
 https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-select.html
 
 3. Console 分析 JSON 数据
-对 users-data.json 进行 S3 Select:
+对 users-data.json 进行 S3 Select
+尝试命令：
 
     select s.userid, s.username, s.phone from s3object as s where s.userid = 7
 
