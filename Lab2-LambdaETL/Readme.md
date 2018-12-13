@@ -6,7 +6,7 @@
 
 本实验会利用 Lab 1 的sample data 文件
 
-## 生成一个 Lambda 执行的角色
+## 权限准备：生成一个 Lambda 执行的角色
 
 目的：创建一个 IAM Role 为 Lambda执行角色
 
@@ -21,7 +21,7 @@
 ![完成](./img/img3.png)
 
 
-## 配置一个空的 Lambda 观察 Event
+## 观察：新建一个空的 Lambda， 并观察触发事件
 
 目的：通过S3新上传文件users-data.json触发Lambda，了解Lambda触发机制，以及触发的Event构成
 
@@ -34,7 +34,7 @@
 
 ![Lambda function](./img/img7.png)
 
-设置（保持默认）:
+Lambda的设置（保持默认）:
 * 超时时间3秒
 * 内存128MB
 * 无VPC（注：Lambda如果访问S3，则无需配置VPC，如果访问EMR，则需要配置访问EMR对应的VPC。并设置Lambda的ENI所在的子网和安全组）
@@ -47,15 +47,17 @@
 ![配置S3触发Lambda](./img/img5.png)
 
 配置S3触发Lambda，并且配置触发的Bucket、前缀和后缀（本例中定义了files/前缀）
+
 右上角，点保存 Lambda函数
 
 3. 上传文件到 S3
 
-在Bucket里面新建一个files目录
-上传users-data.json文件到对应<Your Bucket>/files/ 去触发Lambda
+在Bucket里面新建一个files目录。上传users-data.json文件到对应Bucket/files/ 去触发Lambda
 
 4. 观察 Lambda 的Logs
+
 在 Lambda 监控界面，点击 Invocations -> View logs 从新弹出的CloudWatch界面观察 Lambda的 Log
+
 ![监控](./img/img6.png)
 
 点上级目录可以看到，按时间拆分的Logs
@@ -63,25 +65,28 @@
 
 5. Option 步骤:
 新建测试，选择S3测试样例事件，修改测试事件的bucket、arn和key，保存
-这样，点击“测试”按钮，Lambda就会被S3的Event触发，便于后面的调试
+
+点击“测试”按钮，Lambda就会被S3的Event触发，便于后面的调试
 ![test](./img/img9.png)
+
 也可以把刚才上传文件到S3时触发的事件copy到测试事件中，形成更真实的测试样例（注意修改的双引号以符合json格式）
 
 ## 思考
 
-* 配置 S3 触发Lambda的时候，是否可以不设置前缀和后缀
-
+* 配置 S3 触发Lambda的时候，是否可以不设置前缀和后缀 （注：循环触发）
+* S3 触发Lambda的配置，“所有对象创建事件”包含了什么？
 
 ## 初步：处理数据样例1
 
 目的：上传数据样例文件到S3，触发Lambda处理文件，新文件保存到S3
 
-1. 把Json处理的样例python代码拷贝到Lambda中，并保存
+1. 把s3etl-json.py代码拷贝到Lambda中，并保存
 
-[s3etl-json.py](./s3etl-json.py)
+    [s3etl-json.py](./s3etl-json.py)
 
-2. 对刚才已经上传<Your Bucket>/files/的users-data.json文件进行重命名，自由选定一个新名字，此时会触发Lambda运行
-（或者重新上传users-data.json到刚才的目录，也可以实现相同的触发）
+2. 对刚才已经上传Bucket/files/的users-data.json文件进行重命名，自由选定一个新名字，此时会触发Lambda运行
+或者重新上传users-data.json到刚才的目录，也可以实现相同的触发。
+因为，我们在配置S3触发事件的时候，实际上是默认选择了“所有对象创建事件”，包括了上传和重命名
 
 3. 观察执行的Logs
 
@@ -95,9 +100,9 @@
 * 调试Lambda执行的内存和超时时间
 
 1. 新建一个Lambda
-把csv处理的样例python代码拷贝到Lambda函数中
+把s3etl-csv.py代码拷贝到Lambda函数中
 
-[s3etl-csv.py](./s3etl-csv.py)
+    [s3etl-csv.py](./s3etl-csv.py)
 
 2. 配置 S3 触发Lambda
 配置S3对应的Bucket触发Lambda，配置files/前缀，这次设置另外一个触发的后缀.csv
