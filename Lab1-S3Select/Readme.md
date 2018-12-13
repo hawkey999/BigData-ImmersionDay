@@ -61,15 +61,17 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-
 
 下载代码 [S3SelectDemo-csv.py](./S3SelectDemo-csv.py) 
 
-替换代码中的 bucket 和 s3 bucket prefix 为上传的 pagecount 文件所在位置 
+替换代码中的 bucket 和 s3 bucket prefix 为上传的 users-data.json 文件所在位置 
 
 在本地运行
 
     python3 S3SelectDemo-csv.py
 
-分析并尝试 获取S3 Select 还有哪些选项，S3 SELECT boto3 refer to:
+## 分析并尝试
+
+获取S3 Select 还有哪些选项，S3 SELECT boto3 详细说明见:
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.select_object_content
 
-观察 Python 代码如何获取 Select 结果的，
-Response of PayLoad is botocore.eventstream.EventStream Object, refer to:
+观察 Python 代码如何获取 Select 结果的
+Select返回的响应Payload是 botocore.eventstream.EventStream Object 详细说明见:
 https://botocore.amazonaws.com/v1/documentation/api/latest/reference/eventstream.html#botocore-eventstream
