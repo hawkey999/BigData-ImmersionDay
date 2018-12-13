@@ -1,7 +1,6 @@
 # 动手实验 Lab 2 - Lambda ETL
 
-本实验是在前一实验的基础上，通过文件上传S3自动触发Lambda，Lambda从S3提取文件，转换，并保存新文件到S3.
-提取中，我们使用了前一实验中的S3 Select，减少了提取的数据量
+本实验是在前一实验的基础上，通过文件上传S3自动触发Lambda，Lambda从S3提取文件，转换，并保存新文件到S3。
 
 ## 前置准备
 
@@ -13,13 +12,13 @@
 
 具体操作如下：
 1. 在控制台 IAM 中新建一个“角色”，指定角色为授权Lambda使用
-[新建Lambda角色](./img/img1.png)
+![新建Lambda角色](./img/img1.png)
 
 2. 配置该角色权限，该角色拥有LambdaBaseExcecution权限（能上传log到CloudWatchLog），能读写S3
-[配置权限](./img/img2.png)
+![配置权限](./img/img2.png)
 
 3. 完成创建，并命名。本例子为 Lambda_access_s3，你可以设置你自己的命名。完成后检查一下角色是类似这样的：
-[完成](./img/img3.png)
+![完成](./img/img3.png)
 
 
 ## 配置一个空的 Lambda 观察 Event
@@ -27,13 +26,13 @@
 目的：通过S3新上传文件users-data.json触发Lambda，了解Lambda触发机制，以及触发的Event构成
 
 1. 创建 Lambda 函数
-[创建Lambda](./img/img4.png)
+![创建Lambda](./img/img4.png)
 
 在Todo下面，增加一句代码，我们来观察一下lambda启动收到的Event是什么
 
     print(json.dumps(event, indent=4))
 
-[Lambda function](./img/img7.png)
+![Lambda function](./img/img7.png)
 
 设置（保持默认）:
 * 超时时间3秒
@@ -45,7 +44,7 @@
 右上角，点保存 Lambda函数
 
 2. 配置 S3 触发 Lambda
-[配置S3触发Lambda](./img/img5.png)
+![配置S3触发Lambda](./img/img5.png)
 
 配置S3触发Lambda，并且配置触发的Bucket、前缀和后缀（本例中定义了files/前缀）
 右上角，点保存 Lambda函数
@@ -57,15 +56,15 @@
 
 4. 观察 Lambda 的Logs
 在 Lambda 监控界面，点击 Invocations -> View logs 从新弹出的CloudWatch界面观察 Lambda的 Log
-[监控](./img/img6.png)
+![监控](./img/img6.png)
 
 点上级目录可以看到，按时间拆分的Logs
-[Logs](./img/img8.png)
+![Logs](./img/img8.png)
 
 5. Option 步骤:
 新建测试，选择S3测试样例事件，修改测试事件的bucket、arn和key，保存
 这样，点击“测试”按钮，Lambda就会被S3的Event触发，便于后面的调试
-[test](./img/img9.png)
+![test](./img/img9.png)
 也可以把刚才上传文件到S3时触发的事件copy到测试事件中，形成更真实的测试样例（注意修改的双引号以符合json格式）
 
 ## 思考
@@ -102,7 +101,7 @@
 
 2. 配置 S3 触发Lambda
 配置S3对应的Bucket触发Lambda，配置files/前缀，这次设置另外一个触发的后缀.csv
-[配置触发](./img/imga.png)
+![配置触发](./img/imga.png)
 
 3. 上传数据样例文件到S3
 因为pagecounts-20100212-050000.gz文件比较大，可以采用文件“重命名”来触发
