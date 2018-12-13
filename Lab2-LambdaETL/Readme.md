@@ -26,7 +26,11 @@
 目的：通过S3新上传文件users-data.json触发Lambda，了解Lambda触发机制，以及触发的Event构成
 
 1. 创建 Lambda 函数
+
 ![创建Lambda](./img/img4.png)
+
+观察Lambda的配置界面
+![LambdaGUI](./img/img-gui.png)
 
 在Todo下面，增加一句代码，我们来观察一下lambda启动收到的Event是什么
 
@@ -100,31 +104,37 @@ Lambda的设置（保持默认）:
 * 调试Lambda执行的内存和超时时间
 
 1. 新建一个Lambda
+
 把s3etl-csv.py代码拷贝到Lambda函数中
 
     [s3etl-csv.py](./s3etl-csv.py)
 
 2. 配置 S3 触发Lambda
+
 配置S3对应的Bucket触发Lambda，配置files/前缀，这次设置另外一个触发的后缀.csv
 ![配置触发](./img/imga.png)
 
 3. 上传数据样例文件到S3
+
 因为pagecounts-20100212-050000.gz文件比较大，可以采用文件“重命名”来触发
+
 观察Lambda的Log，是否出现执行失败
 
 4. 调整Lambda执行内存，调整Lambda执行超时时间
+
 本次建议先设置1.5GB，1分钟超时
 
 5. 重新触发Lambda（可以用测试样例事件，或修改S3上的文件名，或重新上传文件）
+
 观察Logs，查看执行时间和使用的内存大小
 
 ## 进阶2: 改用S3 Select处理数据样例2
 
 目的：在进阶1的基础上改用S3 Select处理数据样例2，对比执行情况
 
-1. 在进阶1的Lambda函数中，替换掉整个代码为
+1. 在进阶1的Lambda函数中，替换掉整个代码为s3etl-csv-s3select.py
 
-[s3etl-csv-s3select.py](./s3etl-csv-s3select.py)
+    [s3etl-csv-s3select.py](./s3etl-csv-s3select.py)
 
 2. 再次触发Lambda
 观察Logs，查看执行时间和使用的内存大小
