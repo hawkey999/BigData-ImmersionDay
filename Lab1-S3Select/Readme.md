@@ -1,4 +1,9 @@
-# 动手实验1 - S3 Select
+# 动手实验 Lab 1 - S3 Select
+
+对于存放在S3上的数据，进行轻量级的数据提取，可以采用S3 Select来实现。S3 Select 专用于从对象中仅提取所需数据，从而显著提高性能，并降低需要访问 S3 中的数据的应用程序成本。
+
+大多数应用程序都必须检索整个对象，然后仅筛选出所需数据以进行进一步分析。借助 S3 Select，应用程序可以将筛选和访问对象内数据的繁重工作交给 Amazon S3 服务。通过减少必须由应用程序加载和处理的数据量，S3 Select 可以将经常访问 S3 数据的大多数应用程序的性能最多提高 400%。
+
 
 ## 前置准备
 1. 本机安装 Python3
@@ -16,7 +21,7 @@
 4. 下载以下2个样例数据文件，并上传到你账户的 S3 某个 Bucket 中
 
     [pagecounts-20100212-050000.gz](./sample-data/pagecounts-20100212-050000.gz)
-    
+
     [users-data.json](./sample-data/users-data.json)
 
 ## 在控制台进行 S3 Select
@@ -41,6 +46,8 @@
 
 尝试其他更多的命令，参考：S3 SELECT command SQL
 https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-select.html
+
+
 
 3. Console 分析 JSON 数据
 对 users-data.json 进行 S3 Select
