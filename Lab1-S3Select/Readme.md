@@ -29,17 +29,19 @@
 1. 打开 S3 控制台，选择刚才上传的 pagecounts-20100212-050000.gz ，点选“选择范围”页面
 ![在控制台进行S3 Select](./img/img1.png)
 
-2. Console 分析 CSV 数据
+2. Console 分析 CSV 样例数据
 对 pagecount 数据样例进行 S3 Select 尝试：
 ![下一步](./img/img2.png)
 ![SQL](./img/img3.png)
+
+注意选择文件格式，特别是分隔符是一个空格
 
 尝试命令：
     select count(*) from s3object s
 
     select * from  s3object s limit 10
 
-    select s._1,s._4 from s3object s where s._4='377' limit 10
+    select s._1, s._4 from s3object s where s._4 = '377' limit 10
 
 参考示例，自由做更多 S3 命令尝试
 ![示例](./img/img4.png)
@@ -49,7 +51,7 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-
 
 
 
-3. Console 分析 JSON 数据
+3. Console 分析 JSON 样例数据
 对 users-data.json 进行 S3 Select
 尝试命令：
 
@@ -57,9 +59,9 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-
 
 ## 使用 Python 程序调用 S3 Select
 
-下载样例 [S3SelectDemo-csv.py](./S3SelectDemo-csv.py) 
+下载代码 [S3SelectDemo-csv.py](./S3SelectDemo-csv.py) 
 
-替换代码中的<bucket>和<s3 bucket prefix> 为上传的 pagecount 文件所在位置 
+替换代码中的 bucket 和 s3 bucket prefix 为上传的 pagecount 文件所在位置 
 
 在本地运行
 
