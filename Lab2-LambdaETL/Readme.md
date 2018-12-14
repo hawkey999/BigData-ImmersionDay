@@ -32,7 +32,7 @@
 观察Lambda的配置界面
 ![LambdaGUI](./img/img-gui.png)
 
-在Todo下面，增加一句代码，我们来观察一下lambda启动收到的Event是什么
+在代码编辑窗口：在Todo下面，增加一句代码，用于观察一下lambda启动收到的Event是什么
 
     print(json.dumps(event, indent=4))
 
@@ -146,4 +146,11 @@ Lambda的设置（保持默认）:
 * 为什么需要超时时间？
 * 尝试调整获取的数据不是“>50000"，而是">500"，或者去掉大于500这个条件，获取全量数据。
 再次对比采用S3 Select和Lambda ETL的区别。如何采用S3 Select和Lambda ETL进行结合应用？
+
+## 其他说明：
+
+* Lambda 如果有依赖包，可以打包上传为“层”，要注意打包的目录结构。详见我的另一个文章：
+[《使用AWS Lambda 的“层(Layer)”功能实现依赖包管理》](https://github.com/hawkey999/lambda-layer-demo)
+https://github.com/hawkey999/lambda-layer-demo
+
 
