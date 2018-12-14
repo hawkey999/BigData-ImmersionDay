@@ -1,6 +1,6 @@
 # 动手实验 Lab 1 - S3 Select
 
-对于存放在S3上的数据，进行轻量级的数据提取，可以采用S3 Select来实现。S3 Select 专用于从对象中仅提取所需数据，从而显著提高性能，并降低需要访问 S3 中的数据的应用程序成本。
+对于存放在 S3 上的数据，进行轻量级的数据提取，可以采用 S3 Select来实现。S3 Select 专用于从对象中仅提取所需数据，从而显著提高性能，并降低需要访问 S3 中的数据的应用程序成本。
 
 大多数应用程序都必须检索整个对象，然后仅筛选出所需数据以进行进一步分析。借助 S3 Select，应用程序可以将筛选和访问对象内数据的繁重工作交给 Amazon S3 服务。通过减少必须由应用程序加载和处理的数据量，S3 Select 可以将经常访问 S3 数据的大多数应用程序的性能最多提高 400%。
 
@@ -77,7 +77,7 @@ Select返回的响应Payload是 botocore.eventstream.EventStream Object 详细�
 https://botocore.amazonaws.com/v1/documentation/api/latest/reference/eventstream.html#botocore-eventstream
 
 * 动手  
-使用S3 Select 分析CloudTrail Logs Json，例如：  
+使用S3 Select 分析 CloudTrail Logs Json，例如：  
         select * from s3object[*].Records[*] as s where s.eventName = 'AssumeRole';  
 参考文档
 https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-select.html
