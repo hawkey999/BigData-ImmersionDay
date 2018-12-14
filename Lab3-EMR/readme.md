@@ -35,10 +35,10 @@
 * 核心节点 (Core Node): 核心节点运行HDFS DataNode. 同时还运行任务跟踪守护程序，并对安装的应用程序执行其并行计算任务。例如，运行 YARN NodeManager 守护程序、Hadoop MapReduce 任务和 Spark 执行器。  
 * 任务节点 (Task Node): 任务节点是可选的，可以使用任务节点来支持对数据执行并行计算任务，例如 Hadoop MapReduce 任务和 Spark 执行程序。任务节点不运行HDFS 的DataNode守护程序，也不在 HDFS 中存储数据。  
   
-3. 一般选项
+3. 一般选项  
 ![5](./img/Picture5.png)   
   
-4. 集群安全选项
+4. 集群安全选项  
 ![6](./img/Picture6.png)   
 需要设置一个访问 EC2 的 key
   
