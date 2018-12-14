@@ -18,9 +18,9 @@
 
 ## 创建 EMR 集群
   
-1. 在EMR控制台点创建
+1. 在EMR控制台点创建  
 ![1](./img/Picture1.png)  
-选择高级选项  
+选择高级选项    
 ![2](./img/Picture2.png)  
 选择自动安装的模块  
 ![3](./img/Picture3.png)  
