@@ -12,7 +12,7 @@
 * 不用担心HDFS节点丢失 
 * 不用担心去扩增 HDFS节点, S3 具有高扩展性 (IOPS, 容量)
 
-[s3 data lake](./img/s3-datalake.png)  
+![s3 data lake](./img/s3-datalake.png)  
 
 ## 前置知识
 确认您已具备以下基本操作知识：
@@ -23,14 +23,14 @@
 ## 创建EMR集群
   
 1. 在EMR控制台点创建
-[1](./img/Picture1.png)  
+![1](./img/Picture1.png)  
 选择高级选项  
-[2](./img/Picture2.png)  
+![2](./img/Picture2.png)  
 选择自动安装的模块  
-[3](./img/Picture3.png)  
+![3](./img/Picture3.png)  
   
 2. 配置硬件  
-[4](./img/Picture4.png)  
+![4](./img/Picture4.png)  
 强烈建议不要把EMR直接暴露在公网，应该配置在私有子网，使用跳板机去访问  
 建议配置S3终端节点，从VPC内部直接访问S3，无需绕道公网  
   
@@ -40,10 +40,10 @@
 * 任务节点(Task Node): 任务节点是可选的，可以使用任务节点来支持对数据执行并行计算任务，例如  Hadoop MapReduce 任务和 Spark 执行程序。任务节点不运行HDFS 的DataNode守护程序，也不在  HDFS 中存储数据。  
   
 3. 一般选项
-[5](./img/Picture5.png)   
+![5](./img/Picture5.png)   
   
 4. 集群安全选项
-[6](./img/Picture6.png)   
+![6](./img/Picture6.png)   
 需要设置一个访问EC2的key
   
 5. 完成  
