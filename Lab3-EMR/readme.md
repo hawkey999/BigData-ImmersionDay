@@ -1,5 +1,5 @@
 # 动手实验3 EMR - 托管的 Hadoop
-目的：操作创建一个 EMR 集群，并且使用 Hive 和 Spark，建外表对 S3 中的数据进行分析
+目的：操作创建一个 EMR 集群，并且使用 Hive 和 Spark，建外表对 S3 中的数据进行分析  
 本实验会用到 Lab 1 的实验样例数据 pagecounts-20100212-050000.gz  
 
 ## 把数据放在 S3 数据湖而不是 HDFS
@@ -25,7 +25,7 @@
 选择高级选项    
 ![2](./img/Picture2.png)  
   
-本实验我们选择了 Hive, Pig, Hue, Spark  
+本实验我们选择了 Hadoop, Hive, Spark  
 你可以根据实际情况选择  
   
 选择自动安装的模块   
@@ -74,7 +74,7 @@
 
     hive
   
-修改以下建表命令的bucket和目录为 pagecounts-20100212-050000.gz 数据文件的位置  
+修改以下建表命令的 bucket/prefix 为 pagecounts-20100212-050000.gz 数据文件的位置  
 
     create external table wikistat
     (projectcode string, pagename string, pageviews int, pagesize int)
@@ -83,7 +83,8 @@
 
     CACHE TABLE wikistat;
 
-如果无法连接建表，检查 S3 的路径是否正确，是否在同一个 Region，S3 终端节点是否配置正确，另外 EMR 的角色是否允许访问对应的 S3 Bucket
+如果无法连接建表，检查 S3 的路径是否正确，是否在同一个 Region。  
+另外，这几项是采用默认配置，需要时可以检查调整： S3 终端节点是否配置正确，私有子网的 S3 路由是否指向终端节点，EMR 的角色是否允许访问对应的 S3 Bucket
 
 ![a](./img/Picture-a.png)  
 
@@ -98,14 +99,14 @@
     select pagename, pageviews from wikistat where pageviews > 50000;
 
 退出 Hive 
-  
-  exit;
+
+    exit;
 
 3. Spark-sql
 输入命令减少 INFO 输出  
 
-    sudo sed -i 's/INFO/ERROR/g' /usr/lib/spark/conf/spark-defaults.conf
-    sudo sed -i 's/INFO/ERROR/g' /usr/lib/spark/conf/log4j.properties
+    sudo sed -i 's/INFO/ERROR/g' /usr/lib/spark/conf/spark-defaults.conf  
+    sudo sed -i 's/INFO/ERROR/g' /usr/lib/spark/conf/log4j.properties  
 
 启动 spark-sql  
 
@@ -113,6 +114,7 @@
 
 执行与 Hive 实验中相同的 SQL 比较执行效率  
   
+    ...
 
 退出 spark-sql
 
@@ -120,9 +122,11 @@
 
 4. 可选实验：Spark-shell  
 
+进入 spark-shell ：  
+
     spark-shell
 
-进入 spark-shell 执行以下命令
+执行以下命令
 
     val file = sc.textFile("s3://<BUCKET>/<Prefix>/pagecounts-20100212-050000.gz")
     val reducedList = file.map(l => l.split(" ")).map(l => (l(1), l(2).toInt)).reduceByKey(_+_, 3)
@@ -140,57 +144,57 @@
 5. 可选实验：Hive 分析 CloudTrail 日志
 CloudTrail 跟踪 AWS 账户中所有的 API 日志，是非常重要的审计工具，使用 Hive/Spark/Presto 都可以有效地进行日志搜索和分析，以下以 Hive 为例  
   
-* 建表
+建表
 ```
-    CREATE EXTERNAL TABLE cloudtrail_logs (
-    eventversion STRING,
-    userIdentity STRUCT<
-                type:STRING,
-                principalid:STRING,
-                arn:STRING,
-                accountid:STRING,
-                invokedby:STRING,
-                accesskeyid:STRING,
-                userName:STRING,
-    sessioncontext:STRUCT<
-    attributes:STRUCT<
-                mfaauthenticated:STRING,
-                creationdate:STRING>,
-    sessionIssuer:STRUCT<
-                type:STRING,
-                principalId:STRING,
-                arn:STRING,
-                accountId:STRING,
-                userName:STRING>>>,
-    eventTime STRING,
-    eventSource STRING,
-    eventName STRING,
-    awsRegion STRING,
-    sourceIpAddress STRING,
-    userAgent STRING,
-    errorCode STRING,
-    errorMessage STRING,
-    requestParameters STRING,
-    responseElements STRING,
-    additionalEventData STRING,
-    requestId STRING,
-    eventId STRING,
-    resources ARRAY<STRUCT<
-                ARN:STRING,
-                accountId:STRING,
-                type:STRING>>,
-    eventType STRING,
-    apiVersion STRING,
-    readOnly STRING,
-    recipientAccountId STRING,
-    serviceEventDetails STRING,
-    sharedEventID STRING,
-    vpcEndpointId STRING
-    )
-    ROW FORMAT SERDE 'com.amazon.emr.hive.serde.CloudTrailSerde'
-    STORED AS INPUTFORMAT 'com.amazon.emr.cloudtrail.CloudTrailInputFormat'
-    OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
-    LOCATION 's3://<logs location>';
+CREATE EXTERNAL TABLE cloudtrail_logs (
+eventversion STRING,
+userIdentity STRUCT<
+            type:STRING,
+            principalid:STRING,
+            arn:STRING,
+            accountid:STRING,
+            invokedby:STRING,
+            accesskeyid:STRING,
+            userName:STRING,
+sessioncontext:STRUCT<
+attributes:STRUCT<
+            mfaauthenticated:STRING,
+            creationdate:STRING>,
+sessionIssuer:STRUCT<
+            type:STRING,
+            principalId:STRING,
+            arn:STRING,
+            accountId:STRING,
+            userName:STRING>>>,
+eventTime STRING,
+eventSource STRING,
+eventName STRING,
+awsRegion STRING,
+sourceIpAddress STRING,
+userAgent STRING,
+errorCode STRING,
+errorMessage STRING,
+requestParameters STRING,
+responseElements STRING,
+additionalEventData STRING,
+requestId STRING,
+eventId STRING,
+resources ARRAY<STRUCT<
+            ARN:STRING,
+            accountId:STRING,
+            type:STRING>>,
+eventType STRING,
+apiVersion STRING,
+readOnly STRING,
+recipientAccountId STRING,
+serviceEventDetails STRING,
+sharedEventID STRING,
+vpcEndpointId STRING
+)
+ROW FORMAT SERDE 'com.amazon.emr.hive.serde.CloudTrailSerde'
+STORED AS INPUTFORMAT 'com.amazon.emr.cloudtrail.CloudTrailInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3://<logs location>';
 ```  
 尝试各种查询，例如：
 
