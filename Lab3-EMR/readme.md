@@ -102,7 +102,8 @@
 
     exit;
 
-3. Spark-sql
+3. Spark-sql  
+
 输入命令减少 INFO 输出  
 
     sudo sed -i 's/INFO/ERROR/g' /usr/lib/spark/conf/spark-defaults.conf  
