@@ -70,6 +70,7 @@
 ![9](./img/Picture9.png)   
 
 2. Hive 建外表  
+
 输入命令启动 Hive  
 
     hive
@@ -80,8 +81,6 @@
     (projectcode string, pagename string, pageviews int, pagesize int)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY ' '
     Location 's3://bucket/prefix';
-
-    CACHE TABLE wikistat;
 
 如果无法连接建表，检查 S3 的路径是否正确，是否在同一个 Region。  
 另外，这几项是采用默认配置，需要时可以检查调整： S3 终端节点是否配置正确，私有子网的 S3 路由是否指向终端节点，EMR 的角色是否允许访问对应的 S3 Bucket
@@ -136,7 +135,10 @@
 
 输出的排序结果类似如下：  
 
-    sortedList: Array[(Int, String)] = Array((328476,Special:Search), (217924,Main_Page), (73900,Special:Random), (65047,404_error/), (55814,%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8), (21521,Special:Export/Where_Is_My_Mind), ...
+    sortedList: Array[(Int, String)] = Array((328476,Special:Search), (217924,Main_Page), 
+    (73900,Special:Random), (65047,404_error/), (55814,
+    %E3%83%A1%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8), (21521,
+    Special:Export/Where_Is_My_Mind), ...
 
 退出
 
