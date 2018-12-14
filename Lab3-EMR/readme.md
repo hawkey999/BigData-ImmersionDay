@@ -21,9 +21,14 @@
   
 1. 在EMR控制台点创建  
 ![1](./img/Picture1.png)  
+  
 选择高级选项    
 ![2](./img/Picture2.png)  
-选择自动安装的模块  
+  
+本实验我们选择了 Hive, Pig, Hue, Spark  
+你可以根据实际情况选择  
+  
+选择自动安装的模块   
 ![3](./img/Picture3.png)  
   
 2. 配置硬件  
@@ -113,7 +118,7 @@
 
     exit;
 
-4. 可选：实验 Spark-shell  
+4. 可选实验：Spark-shell  
 
     spark-shell
 
@@ -132,3 +137,66 @@
 
     :quit
 
+5. 可选实验：Hive 分析 CloudTrail 日志
+CloudTrail 跟踪 AWS 账户中所有的 API 日志，是非常重要的审计工具，使用 Hive/Spark/Presto 都可以有效地进行日志搜索和分析，以下以 Hive 为例  
+  
+* 建表
+```
+    CREATE EXTERNAL TABLE cloudtrail_logs (
+    eventversion STRING,
+    userIdentity STRUCT<
+                type:STRING,
+                principalid:STRING,
+                arn:STRING,
+                accountid:STRING,
+                invokedby:STRING,
+                accesskeyid:STRING,
+                userName:STRING,
+    sessioncontext:STRUCT<
+    attributes:STRUCT<
+                mfaauthenticated:STRING,
+                creationdate:STRING>,
+    sessionIssuer:STRUCT<
+                type:STRING,
+                principalId:STRING,
+                arn:STRING,
+                accountId:STRING,
+                userName:STRING>>>,
+    eventTime STRING,
+    eventSource STRING,
+    eventName STRING,
+    awsRegion STRING,
+    sourceIpAddress STRING,
+    userAgent STRING,
+    errorCode STRING,
+    errorMessage STRING,
+    requestParameters STRING,
+    responseElements STRING,
+    additionalEventData STRING,
+    requestId STRING,
+    eventId STRING,
+    resources ARRAY<STRUCT<
+                ARN:STRING,
+                accountId:STRING,
+                type:STRING>>,
+    eventType STRING,
+    apiVersion STRING,
+    readOnly STRING,
+    recipientAccountId STRING,
+    serviceEventDetails STRING,
+    sharedEventID STRING,
+    vpcEndpointId STRING
+    )
+    ROW FORMAT SERDE 'com.amazon.emr.hive.serde.CloudTrailSerde'
+    STORED AS INPUTFORMAT 'com.amazon.emr.cloudtrail.CloudTrailInputFormat'
+    OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+    LOCATION 's3://<logs location>';
+```  
+尝试各种查询，例如：
+
+    select * from cloudtrail_logs_sub where eventname = 'AssumeRole' limit 3;
+    select * from cloudtrail_logs_sub where eventname like '%DBInstances' limit 3;
+    select eventName, count(*) c from cloudtrail_logs group by eventName order by c desc limit 5;
+
+Cloutrail日志分析请参考文档：  
+https://docs.aws.amazon.com/zh_cn/athena/latest/ug/cloudtrail-logs.html
