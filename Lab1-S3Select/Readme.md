@@ -34,9 +34,10 @@
 ![下一步](./img/img2.png)
 ![SQL](./img/img3.png)
 
-注意选择文件格式，特别是分隔符是一个空格
+注意选择文件格式，特别是分隔符是一个空格  
 
 尝试命令：  
+
     select count(*) from s3object s
 
     select * from  s3object s limit 10
@@ -50,10 +51,10 @@
 https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-select.html
 
 
+3. Console 分析 JSON 样例数据  
+对 users-data.json 进行 S3 Select  
 
-3. Console 分析 JSON 样例数据
-对 users-data.json 进行 S3 Select
-尝试命令：
+尝试命令：  
 
     select s.userid, s.username, s.phone from s3object as s where s.userid = 7
 
@@ -61,7 +62,7 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-
 
 下载代码 [S3SelectDemo-csv.py](./S3SelectDemo-csv.py) 
 
-替换代码中的 bucket 和 s3 bucket prefix 为上传的 users-data.json 文件所在位置 
+替换代码中的 bucket 和 s3 bucket prefix 为上传的 pagecounts-20100212-050000.gz 文件所在位置 
 
 在本地运行  
 
@@ -69,11 +70,16 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-
 
 ## 分析并尝试
 
+替换代码中的 SQL 为其他查询，例如如下。观察当 S3 Select 查询时间长的时候，结果 Stream 的输出：
+
+    select s._2,s._3 from s3object s where CAST(s._3 as INTEGER)>5000 limit 20
+
+
 * 获取S3 Select 还有哪些选项，S3 SELECT boto3 详细说明见:  
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.select_object_content
 
 * 观察 Python 代码如何获取 Select 结果的  
-Select返回的响应Payload是 botocore.eventstream.EventStream Object 详细说明见:
+Select 返回的响应 Payload 是 botocore.eventstream.EventStream Object 详细说明见:
 https://botocore.amazonaws.com/v1/documentation/api/latest/reference/eventstream.html#botocore-eventstream
 
 * 动手  

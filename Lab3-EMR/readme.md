@@ -16,7 +16,17 @@
 * VPC、子网、安全组的创建
 * EC2 的创建，以及使用 Key pair 进行 SSH 登录
 * 对 S3 有了解
+  
+## 安全提醒
 
+注意：强烈建议不要把集群直接暴露在公网并开放被所有 IP 访问，选择以下其中一种方式：  
+1. 集群配置在私有子网，从公网访问位于公有子网的堡垒机去访问，也不要配置 EMR 通过 NAT 去访问公网，要访问 S3 可以通过 S3 终端节点  
+2. 集群配置在公有子网，其安全组只允许办公网的 IP 地址段访问，并限制其不能主动发起访问公网
+3. 集群配置在私有子网，通过专线或 VPN 连接访问  
+以下实验指导是按 1 的方式
+
+注意：EMR 默认的角色是可以访问所有 S3 的 Bucket，请在生产环境中坚持最小权限原则，只配置其要访问的 Bucket 权限  
+  
 ## 创建 EMR 集群
   
 1. 在EMR控制台点创建  
@@ -25,15 +35,14 @@
 选择高级选项    
 ![2](./img/Picture2.png)  
   
-本实验我们选择了 Hadoop, Hive, Spark  
-你可以根据实际情况选择  
+本实验我们选择了 Hadoop, Hive, Spark  你可以根据实际情况选择，选择更多的模块需要对应的硬件增大配置  
   
 选择自动安装的模块   
 ![3](./img/Picture3.png)  
   
 2. 配置硬件  
 ![4](./img/Picture4.png)  
-强烈建议不要把 EMR 直接暴露在公网，应该配置在私有子网，使用跳板机去访问  
+  
 建议配置 S3 终端节点，从 VPC 内部直接访问 S3 ，无需绕道公网  
   
 三种节点说明：  
@@ -49,21 +58,23 @@
 4. 集群安全选项  
 ![6](./img/Picture6.png)   
 需要设置一个访问 EC2 的 key
+
+再次提醒 EMR 默认的角色是可以访问所有 S3 的 Bucket，请在生产环境中坚持最小权限原则，只配置其要访问的 Bucket 权限
   
 5. 完成创建并修改安全组  
 等待集群启动，并观察摘要、监控、硬件、事件、步骤等选项  
   
 ![8](./img/Picture8.png)   
 
-修改 Master 节点的安全组，允许跳板机的 IP 地址访问 22 端口  
+修改 Master 节点的安全组，允许堡垒机的 IP 地址访问 22 端口  
 ![7](./img/Picture7.png)   
 
 ## Hive 分析样例数据
 
-1. 登录跳板机
-将 EMR 访问所需要的 Key pair 上传到跳板机
+1. 登录堡垒机
+将 EMR 访问所需要的 Key pair 上传到堡垒机
 
-通过跳板机远程登录 EMR Master 节点  
+通过堡垒机远程登录 EMR Master 节点  
 
     ssh -i ~/id_rsa.pem hadoop@<emr-master-dns>
   
@@ -205,5 +216,4 @@ LOCATION 's3://<logs location>';
     select * from cloudtrail_logs_sub where eventname like '%DBInstances' limit 3;
     select eventName, count(*) c from cloudtrail_logs group by eventName order by c desc limit 5;
 
-Cloutrail日志分析请参考文档：  
-https://docs.aws.amazon.com/zh_cn/athena/latest/ug/cloudtrail-logs.html
+[Cloutrail日志分析请参考文档](https://docs.aws.amazon.com/zh_cn/athena/latest/ug/cloudtrail-logs.html)
