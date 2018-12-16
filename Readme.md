@@ -8,6 +8,8 @@
 
 * Lab4 数据仓库 - Amazon Redshift 入门
 
+* Lab5 启动深度学习 EC2 环境 Amazon Deep Learning AMI
+
 
 ## 前置准备
 
