@@ -81,7 +81,7 @@ https://docs.aws.amazon.com/zh_cn/redshift/latest/mgmt/connecting-from-psql.html
 
 拷贝这个新建角色的 ARN，等会要用到  
 
-* 创建 Redshift 集群
+* 创建 Redshift 集群  
 创建  
 ![8](./img/img8.png)    
   
@@ -96,7 +96,7 @@ https://docs.aws.amazon.com/zh_cn/redshift/latest/mgmt/connecting-from-psql.html
 
 ## 连接 Redshift 并操作
 
-* 连接
+* 连接  
 从 Redshift 控制面板复制集群的“终端节点”，例如：  
     redshift2.c5ogcqxxxxxxx.cn-northwest-1.redshift.amazonaws.com.cn:5439  
   
@@ -116,6 +116,9 @@ URL 粘贴刚才复制的终端节点到中间，形成：
   
 * 建表  
 
+![c](./img/imgc.png)  
+
+
 输入以下建表 SQL 并点击执行  
 
     create table wikistat 
@@ -130,7 +133,7 @@ URL 粘贴刚才复制的终端节点到中间，形成：
 * 从 S3 加载数据  
 
 输入以下 SQL 并执行  
-注意替换 S3 bucket/prefix 为样例数据文件的位置  
+注意替换 S3 bucket/prefix 为样例数据文件的位置，并设置你所使用的 AWS Region  
 IAM_ROLE 是刚才新建的那个 Redshift 读取 S3 的角色 ARN  
 
     COPY wikistat
@@ -141,7 +144,7 @@ IAM_ROLE 是刚才新建的那个 Redshift 读取 S3 的角色 ARN
     REMOVEQUOTES
     REGION 'cn-northwest-1';
 
-查询 Redshift 自动加载选择的压缩编码：  
+完成后，数据就已经从 S3 加载到 Redshift 中了，你可以开始使用你的数据，或者你可以先查询一下 Redshift 自动加载选择的压缩编码：  
 
     SELECT * FROM PG_TABLE_DEF WHERE SCHEMANAME = 'public' AND TABLENAME = 'wikistat'
 
