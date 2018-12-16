@@ -6,7 +6,7 @@
 
 * Lab3 Hadoop(Hive&Spark) - Amazon EMR
 
-* Lab4 数据库仓库 - Amazon Redshift
+* Lab4 数据仓库 - Amazon Redshift 入门
 
 
 ## 前置准备
