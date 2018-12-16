@@ -32,14 +32,14 @@ pem 文件是 EC2 实例的 Key ，instance DNS 是 EC2 的地址。
 这里使用 8888 端口转发，是为了后面的步骤访问 jupyter notebook  
   
 登录后界面  
-![5](./img/img5.png)  
+![5](./img/img5c.png)  
 
 5. 启动 Jupyter notebook  
 ```
 jupyter notebook
 ```
   
-![6](./img/img6.png)  
+![6](./img/img6c.png)  
 
 从回显中拷贝 jupyter notebook 的地址，在本地浏览器打开即可访问
 
