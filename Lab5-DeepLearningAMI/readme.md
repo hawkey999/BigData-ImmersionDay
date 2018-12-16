@@ -26,7 +26,7 @@ AWS Deep Learning AMI 可以为机器学习从业人员和研究人员提供基�
 
 4. 登录  
 ```
-    ssh -L localhost:8888:localhost:8888 -i <.pem file name> ubuntu@< instance DNS>
+ssh -L localhost:8888:localhost:8888 -i <.pem file name> ubuntu@< instance DNS>
 ```
 pem 文件是 EC2 实例的 Key ，instance DNS 是 EC2 的地址。  
 这里使用 8888 端口转发，是为了后面的步骤访问 jupyter notebook  
@@ -35,9 +35,10 @@ pem 文件是 EC2 实例的 Key ，instance DNS 是 EC2 的地址。
 ![5](./img/img5.png)  
 
 5. 启动 Jupyter notebook  
+```
+jupyter notebook
+```
   
-    jupyter notebook
-
 ![6](./img/img6.png)  
 
 从回显中拷贝 jupyter notebook 的地址，在本地浏览器打开即可访问
