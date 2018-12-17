@@ -27,9 +27,9 @@
 
 4. 下载以下2个样例数据文件，并上传到你账户的 S3 某个 Bucket 中
 
-    [pagecounts-20100212-050000.gz](./sample-data/pagecounts-20100212-050000.gz)
+    [pagecounts-20100212-050000.gz](./Lab1-S3Select/sample-data/pagecounts-20100212-050000.gz)
 
-    [users-data.json](./sample-data/users-data.json)
+    [users-data.json](./Lab1-S3Select/sample-data/users-data.json)
 
 5. 安装 数据仓库客户端  
 

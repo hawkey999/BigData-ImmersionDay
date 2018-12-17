@@ -31,6 +31,7 @@ ssh -L localhost:8888:localhost:8888 -i <.pem file name> ec2-user@< instance DNS
 ```
 pem 文件是 EC2 实例的 Key ，instance DNS 是 EC2 的地址。  
 这里使用 8888 端口转发，是为了后面的步骤访问 jupyter notebook  
+如果 ubuntu 则登录的用户名从 ec2-user 改为 ubuntu
   
 登录后界面  
 ![5](./img/img5c.png)  
