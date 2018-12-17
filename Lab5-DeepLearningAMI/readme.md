@@ -19,6 +19,7 @@ AWS Deep Learning AMI 可以为机器学习从业人员和研究人员提供基�
 
 ![3](./img/img3.png)  
 
+
 3. 选择实例类型  
 
 如果需要 GPU 可以选择 GPU 实例，如果不需要 GPU，则可以考虑其他的 C 系列或 R 系列实例
@@ -26,7 +27,7 @@ AWS Deep Learning AMI 可以为机器学习从业人员和研究人员提供基�
 
 4. 登录  
 ```
-ssh -L localhost:8888:localhost:8888 -i <.pem file name> ubuntu@< instance DNS>
+ssh -L localhost:8888:localhost:8888 -i <.pem file name> ec2-user@< instance DNS>
 ```
 pem 文件是 EC2 实例的 Key ，instance DNS 是 EC2 的地址。  
 这里使用 8888 端口转发，是为了后面的步骤访问 jupyter notebook  
@@ -34,9 +35,16 @@ pem 文件是 EC2 实例的 Key ，instance DNS 是 EC2 的地址。
 登录后界面  
 ![5](./img/img5c.png)  
 
+查看 GPU 信息，以及刷新 GPU 占用情况(5秒刷新)
+```
+nvidia-smi -L
+nvidia-smi -l 5
+```
+
 5. 启动 Jupyter notebook  
 ```
-jupyter notebook
+nohup jupyter notebook --no-browser &
+tail nohup.out
 ```
   
 ![6](./img/img6c.png)  
@@ -48,3 +56,63 @@ jupyter notebook
 ![7](./img/img7.png)  
 
 点击 NEW 生成对应的环境，然后你就可以开始做分析了。
+
+7. Explore more ...  
+启动 Deep Learning AMI (Amazon Linux) ，并使用 GPU 实例
+
+```
+source activate mxnet_p36
+cd src
+ls
+```
+查看 GPU 
+```
+nvidia-smi -L
+```
+Start Jupyter notebook
+```
+nohup jupyter notebook --no-browser &
+tail nohup.out
+```
+[Jupyter notebook 文档](http://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/what_is_jupyter.html)
+
+尝试 [MNIST 手写识别数据集](http://yann.lecun.com/exdb/mnist/)
+
+## 创建多层神经网络  
+在 Jupyter notebook ln 栏运行加载依赖包  
+```
+# Import dependencies
+from __future__ import print_function
+import mxnet as mx
+import numpy as np
+from mxnet import nd, autograd
+print("Dependencies imported")
+```
+使用 GPU 
+```
+# Use a GPU with MXNet
+ctx = mx.gpu()
+```
+加载 MNIST 数据
+```
+# Get the MNIST image dataset
+mnist = mx.test_utils.get_mnist()
+```
+定义神经网络参数
+```
+# Parameters for the neural network
+# Number of inputs: A 1-dimensional input consisting of a single image (28 pixels by 28 pixels)
+num_inputs = 784
+# Number of Outputs: Number of outputs to be predicted by the network (Digits 0-9) 
+num_outputs = 10
+# Batch size is the number of images processed in a single batch 
+batch_size = 64
+```
+拆分数据为训练集和测试集
+```
+def transform(data, label):
+    return data.astype(np.float32)/255, label.astype(np.float32)
+train_data = mx.gluon.data.DataLoader(mx.gluon.data.vision.MNIST(train=True, transform=transform),batch_size, shuffle=True)
+test_data = mx.gluon.data.DataLoader(mx.gluon.data.vision.MNIST(train=False, transform=transform),batch_size, shuffle=False)
+```
+... ...
