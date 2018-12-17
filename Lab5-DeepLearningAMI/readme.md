@@ -13,7 +13,7 @@ AWS Deep Learning AMI 可以为机器学习从业人员和研究人员提供基�
   
 ![1](./img/img1.png)
   
-2. 选择深度学习镜像  
+2. 选择深度学习 AMI  
 
 如果不知道如何选择，可以参考文档[《选择 Deep Learning AMI 》](https://docs.aws.amazon.com/zh_cn/dlami/latest/devguide/options.html)  
 
